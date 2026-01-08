@@ -45,20 +45,22 @@ function SignIn() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <div>
+            <form onSubmit={handleSubmit} className="mx-8 rounded-md border border-gray-50 p-3 bg-gray-200">
+                <div className="text-center mb-4 font-bold">
                      <h1>Sign In</h1>
                 </div>
                 <div>
                     <input type="text" 
                             placeholder="Username" 
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)} />
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="w-full border border-gray-300 rounded-md my-2 p-2" />
                     <input type="password" 
                             placeholder="Password" 
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)} />
-                    <button type="submit">Sign In</button>
+                            onChange={(e) => setPassword(e.target.value)} 
+                            className="w-full border border-gray-300 rounded-md my-2 p-2"/>
+                    <button type="submit" className="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md">Sign In</button>
                 </div>
             </form>
         </>
