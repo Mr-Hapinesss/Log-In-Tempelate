@@ -44,7 +44,24 @@ router.post('/login',async (req, res) => {
     }
 });
 
+//Profile route (protected)
+router.get('/profile', (req, res) => {
+    const token = req.cookies.token;   // Get token from cookies
+    if (!token) {
+        return res.status(401).send('Access denied'); // No token provided
+    }
+    try {
+        const user = jwt.verify(token, process.env.JWT_SECRET); // Verify token
+        res.json({ id: user.id, username: user.username }); // Send user data
+    } catch (error) {
+        res.status(401).send('Invalid token');  // Invalid token
+    }
+});
 
+//LogOut User
+router.post('/logout', (req, res) => {
+    res.clearCookie('token', { path: '/' }).send('User logged out successfully');
+});
 
 
 module.exports = router;
