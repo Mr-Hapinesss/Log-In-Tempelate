@@ -26,23 +26,29 @@ router.post('/login',async (req, res) => {
         if (!user) {
             return res.status(400).send('Invalid username or password'); // User not found
         }
+
         const isValid = bcrypt.compareSync(password, user.password); // Compare passwords
         if (!isValid) {
             return res.status(400).send('Invalid username or password'); // Invalid password
-        } else {
-            res.status(200).send('Login successful');
+        }
+
             // Generate a jwt token for session management.
-            const token = jwt.sign({ id: user._id.toString(), username: user.username }, process.env.JWT_SECRET, { expiresIn: '24h' }, (err, token) => {
-                 if (err) {
-                 return res.status(500).json({ error: 'Error generating token' });
-                 }
-            res.cookie('token', token, { httpOnly: true , secure: false , sameSite: 'lax' , path: '/' }).json({ id: user._id, username: user.username });
-      });
+        try {
+            const token = jwt.sign(
+                { id: user._id.toString(), username: user.username }, 
+                process.env.JWT_SECRET, 
+                { expiresIn: '24h' }
+            );
+
+            res.cookie('token', token, { httpOnly: true, sameSite: 'lax' })
+            .json({ id: user._id, username: user.username });
+        } catch (err) {
+           res.status(500).json('Token generation failed');
         }
     } catch (error) {
         res.status(500).send('Error logging in user');
-    }
-});
+    }}
+);
 
 //Profile route (protected)
 router.get('/profile', (req, res) => {
@@ -52,7 +58,7 @@ router.get('/profile', (req, res) => {
     }
     try {
         const user = jwt.verify(token, process.env.JWT_SECRET); // Verify token
-        res.json({ id: user.id, username: user.username }); // Send user data
+        res.json({ info: user }); // Send user data
     } catch (error) {
         res.status(401).send('Invalid token');  // Invalid token
     }
