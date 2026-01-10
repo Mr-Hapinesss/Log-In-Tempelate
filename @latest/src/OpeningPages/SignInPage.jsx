@@ -3,6 +3,7 @@ import { useState } from "react";
 function SignIn() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [ redirect, setRedirect ] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,13 +27,16 @@ function SignIn() {
 
         const response = await fetch('http://localhost:3000/user/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })    
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify({ username, password }), 
+            credentials: 'include'      // Include cookies in the request   
         });
         if (response.ok) {
             alert("Login successful!");
+            setRedirect(true);   // Set redirect to true on successful login
+
+            // Redirect to profile page after login
+            window.location.href = "/main";
         } else {
             alert("Login failed. Please check your credentials and try again.");
         }
@@ -45,22 +49,24 @@ function SignIn() {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="mx-8 rounded-md border border-gray-50 p-3 bg-gray-200">
-                <div className="text-center mb-4 font-bold">
-                     <h1>Sign In</h1>
-                </div>
+            <form onSubmit={handleSubmit} className=" my-4 rounded-md shadow-lg p-2 w-110 bg-gray-200">
                 <div>
-                    <input type="text" 
-                            placeholder="Username" 
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="w-full border border-gray-300 rounded-md my-2 p-2" />
-                    <input type="password" 
-                            placeholder="Password" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)} 
-                            className="w-full border border-gray-300 rounded-md my-2 p-2"/>
-                    <button type="submit" className="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md">Sign In</button>
+                    <div className="text-center mb-4 font-bold">
+                        <h1>Sign In</h1>
+                    </div>
+                    <div className="flex flex-col p-4">
+                        <input type="text" 
+                                placeholder="Username" 
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                className="w-full border border-gray-300 rounded-md my-2 p-2" />
+                        <input type="password" 
+                                placeholder="Password" 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md my-2 p-2"/>
+                        <button type="submit" className="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md">Sign In</button>
+                    </div>
                 </div>
             </form>
         </>

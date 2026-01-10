@@ -40,8 +40,8 @@ router.post('/login',async (req, res) => {
                 { expiresIn: '24h' }
             );
 
-            res.cookie('token', token, { httpOnly: true, sameSite: 'lax' })
-            .json({ id: user._id, username: user.username });
+            res.cookie('token', token, { httpOnly: true, sameSite: 'lax', secure: false, path: '/' }); // Set token in httpOnly cookie
+            res.json({ id: user._id, username: user.username });
         } catch (err) {
            res.status(500).json('Token generation failed');
         }
@@ -63,6 +63,10 @@ router.get('/profile', (req, res) => {
         res.status(401).send('Invalid token');  // Invalid token
     }
 });
+
+// update User Profile (protected)
+
+// delete User (protected)
 
 //LogOut User
 router.post('/logout', (req, res) => {

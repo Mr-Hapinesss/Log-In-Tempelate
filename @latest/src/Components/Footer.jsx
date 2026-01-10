@@ -5,7 +5,7 @@ function Footer() {
     <>
         <div>Footer section</div>
         <p>Website Description</p>
-        <p>© 2024 Website Name. All rights reserved.</p>
+        <p>&copy; 2024 Website Name. All rights reserved.</p>
     </>
   );
 }

@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom';
 
 function Header() {
   const { userInfo, setUserInfo } = React.useContext(userContext);
+  const [ loggedIn, setLoggedIn ] = useState(false);
+  const [ loggedOut, setLoggedOut ] = useState(false);
 
 
   useEffect( ()=> {   // Fetch user profile on component mount
@@ -19,6 +21,7 @@ function Header() {
         .then(data => {
             console.log("Fetched user info:", data);
            setUserInfo(data);
+           setLoggedIn(true);
            console.log("User info set to:", data);
         })
         }, []);
@@ -35,6 +38,8 @@ function Header() {
     .then(response => {
         if (response.ok) {
             setUserInfo(null); // Clear user info on logout
+            window.location.href = "/default"; // Redirect to homepage
+            setLoggedIn(false);
         }
     })
     .catch(error => {
@@ -42,30 +47,36 @@ function Header() {
     });
   }
 
-  const username = userInfo?.username;
+  const username = userInfo?.info?.username;
+
+  let logo = loggedIn ? "/main" : "/default";
 
   return (
     <>
         <header className="flex justify-between w-full bg-slate-600 px-4 py-6 border-gray-300">
-            <Link to="/" className="text-black text-3xl align-middle font-bold">My Website</Link>
+            <Link to={logo} className="text-black text-3xl align-middle font-bold">My Website</Link>
             <nav className="flex justify between gap-4 text-grey-100 text-sm font-medium">
 
                 {username && ( // If user is logged in
-                    <>
-                        <button >
-                          <Link to="/profile" >{username}'s Profile</Link>
+                    <>  
+                        <button className='border border-black-600 p-2 rounded-md hover:bg-gray-400'>
+                          <Link to="/main">Home</Link>
                         </button>
-                        <button >
+                        <button className='border border-black-600 p-2 rounded-md hover:bg-gray-400'>
+                          <Link to="/profile" >My Profile</Link>
+                        </button>
+                        <button className='border border-black-600 p-2 rounded-md hover:bg-red-700 hover:text-white'>
                           <a onClick={logout}>Logout</a>
                         </button>
+                        
                     </>
                 )}
                 {!username && ( // If user is not logged in
                     <>
-                        <button >
+                        <button className='border border-black-600 p-2 rounded-md hover:bg-gray-500'>
                           <Link to="/signin">SignIn</Link>
                         </button>
-                        <button >
+                        <button className='hover:bg-gray-300 rounded-md p-2'>
                           <Link to="/signup">SignUp</Link>
                         </button>
                     </>
