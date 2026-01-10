@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 function Header() {
   const { userInfo, setUserInfo } = React.useContext(userContext);
   const [ loggedIn, setLoggedIn ] = useState(false);
-  const [ loggedOut, setLoggedOut ] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
 
   useEffect( ()=> {   // Fetch user profile on component mount
@@ -65,12 +65,35 @@ function Header() {
                         <button className='border border-black-600 p-2 rounded-md hover:bg-gray-400'>
                           <Link to="/profile" >My Profile</Link>
                         </button>
+
+
                         <button className='border border-black-600 p-2 rounded-md hover:bg-red-700 hover:text-white'>
-                          <a onClick={logout}>Logout</a>
+                          <a onClick={() => setShowConfirm(true)}>Logout</a>
                         </button>
-                        
-                    </>
-                )}
+                        {showConfirm && (
+                          <>
+                            <div className="fixed inset-0 bg-opacity-70 flex items-center justify-center">
+                                <div className="bg-gray-200 p-6 rounded-md shadow-md">
+                                    <p className="mb-4 font-bold">Are you sure you want to logout?</p>
+                                    <div className="flex justify-end gap-4">
+                                        <button
+                                          className="bg-red-500 text-white px-4 py-2 rounded-md cursor-pointer hover:bg-red-600"
+                                          onClick={() => { logout(); setShowConfirm(false); }}
+                                        >
+                                          Yes
+                                        </button>
+                                        <button
+                                          className="bg-gray-300 px-4 py-2 rounded-md cursor-pointer hover:bg-gray-400"
+                                            onClick={() => setShowConfirm(false)}
+                                        >
+                                          No
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </>
+                        )}
+                    </>)};<br/>
                 {!username && ( // If user is not logged in
                     <>
                         <button className='border border-black-600 p-2 rounded-md hover:bg-gray-500'>
@@ -86,5 +109,6 @@ function Header() {
     </>
   );
 }
+
 
 export default Header;

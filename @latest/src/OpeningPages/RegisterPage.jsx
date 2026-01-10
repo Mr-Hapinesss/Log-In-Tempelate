@@ -55,29 +55,31 @@ function SignUp() {
 
     return (
         <>
-            <form onSubmit={handleSubmit} className="mx-8 rounded-md border border-gray-50 p-3 bg-gray-200">
-                <div className="text-center mb-4 font-bold">
-                     <h1>Register Page</h1>
-                </div>
-                <div>
-                    <input type="text" 
-                            placeholder="Username" 
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)} 
-                            className="w-full border border-gray-300 rounded-md my-2 p-2"/>
-                    <input type="password" 
-                            placeholder="Password" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)} 
-                            className="w-full border border-gray-300 rounded-md my-2 p-2"/>
-                    <input type="password" 
-                            placeholder="Confirm Password" 
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)} 
-                            className="w-full border border-gray-300 rounded-md my-2 p-2"/>
-                    <button type="submit" className="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md">Sign Up</button>
-                </div>
-            </form>
+            <div className="flex flex-col items-center justify-center  bg-gray-100">
+                <form onSubmit={handleSubmit} className="my-4 rounded-md shadow-lg p-2 w-130 bg-gray-200">
+                    <div className="text-center mb-4 font-bold">
+                        <h1>Register Page</h1>
+                    </div>
+                    <div>
+                        <input type="text" 
+                                placeholder="Username" 
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md my-2 p-2"/>
+                        <input type="password" 
+                                placeholder="Password" 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md my-2 p-2"/>
+                        <input type="password" 
+                                placeholder="Confirm Password" 
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md my-2 p-2"/>
+                        <button type="submit" className="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md">Sign Up</button>
+                    </div>
+                </form>
+            </div>
         </>
     );
 }
